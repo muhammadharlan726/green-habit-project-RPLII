@@ -1,0 +1,55 @@
+services:
+  # Web Service
+  - type: web
+    name: greenhabit
+    runtime: docker
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "./start.sh"
+    envVars:
+      - key: APP_NAME
+        value: GreenHabit
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: error
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        fromDatabase:
+          name: greenhabit-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: greenhabit-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: greenhabit-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: greenhabit-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: greenhabit-db
+          property: password
+
+databases:
+  - name: greenhabit-db
+    plan: free
+    databaseName: greenhabit
+    user: greenhabit

@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    @keyframes blob {
+        0%, 100% {
+            transform: translate(0px, 0px) scale(1);
+        }
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+    
+    @keyframes wave {
+        0%, 100% { transform: rotate(0deg); }
+        10%, 30% { transform: rotate(14deg); }
+        20%, 40% { transform: rotate(-8deg); }
+        50% { transform: rotate(10deg); }
+        60% { transform: rotate(0deg); }
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .animate-blob {
+        animation: blob 7s infinite;
+    }
+    
+    .animate-wave {
+        animation: wave 2.5s infinite;
+        transform-origin: 70% 70%;
+    }
+    
+    .animate-pulse-slow {
+        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .shimmer {
+        animation: shimmer 3s infinite;
+    }
+    
+    .animation-delay-2000 {
+        animation-delay: 2s;
+    }
+    
+    .animation-delay-4000 {
+        animation-delay: 4s;
+    }
+
+    /* Batik Megamendung Border Wave Pattern - Legendary Only */
+    .megamendung-border-wave {
+        position: relative;
+        border: 3px solid;
+    }
+
+    .megamendung-border-wave::before {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border-radius: inherit;
+        padding: 3px;
+        background: linear-gradient(135deg,
+            rgba(250, 204, 21, 0.8) 0%,
+            rgba(250, 204, 21, 0.4) 25%,
+            rgba(249, 115, 22, 0.6) 50%,
+            rgba(250, 204, 21, 0.4) 75%,
+            rgba(250, 204, 21, 0.8) 100%) border-box;
+        -webkit-mask: 
+            linear-gradient(to right, 
+                transparent 0%, 
+                black 5%, 
+                black 15%, 
+                transparent 20%, 
+                transparent 30%, 
+                black 35%, 
+                black 45%, 
+                transparent 50%, 
+                transparent 60%, 
+                black 65%, 
+                black 75%, 
+                transparent 80%, 
+                transparent 90%, 
+                black 95%, 
+                transparent 100%);
+        mask: 
+            linear-gradient(to right, 
+                transparent 0%, 
+                black 5%, 
+                black 15%, 
+                transparent 20%, 
+                transparent 30%, 
+                black 35%, 
+                black 45%, 
+                transparent 50%, 
+                transparent 60%, 
+                black 65%, 
+                black 75%, 
+                transparent 80%, 
+                transparent 90%, 
+                black 95%, 
+                transparent 100%);
+        pointer-events: none;
+    }
+
+    /* Megamendung Pattern - Bold Cloud Wave for full card */
+    .megamendung-common {
+        background: 
+            radial-gradient(ellipse 700px 400px at 15% 25%, rgba(34, 197, 94, 0.65) 0%, transparent 45%),
+            radial-gradient(circle 350px at 85% 70%, rgba(22, 163, 74, 0.60) 0%, transparent 55%),
+            radial-gradient(ellipse 600px 300px at 60% 50%, rgba(74, 222, 128, 0.55) 0%, transparent 50%),
+            radial-gradient(circle 280px at 35% 40%, rgba(34, 197, 94, 0.60) 0%, transparent 55%);
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+
+    .megamendung-rare {
+        background: 
+            radial-gradient(ellipse 700px 400px at 15% 25%, rgba(59, 130, 246, 0.70) 0%, transparent 45%),
+            radial-gradient(circle 350px at 85% 70%, rgba(37, 99, 235, 0.65) 0%, transparent 55%),
+            radial-gradient(ellipse 600px 300px at 60% 50%, rgba(96, 165, 250, 0.60) 0%, transparent 50%),
+            radial-gradient(circle 280px at 35% 40%, rgba(59, 130, 246, 0.65) 0%, transparent 55%);
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+
+    .megamendung-epic {
+        background: 
+            radial-gradient(ellipse 700px 400px at 15% 25%, rgba(168, 85, 247, 0.70) 0%, transparent 45%),
+            radial-gradient(circle 350px at 85% 70%, rgba(126, 34, 206, 0.65) 0%, transparent 55%),
+            radial-gradient(ellipse 600px 300px at 60% 50%, rgba(196, 181, 253, 0.60) 0%, transparent 50%),
+            radial-gradient(circle 280px at 35% 40%, rgba(168, 85, 247, 0.65) 0%, transparent 55%);
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+
+    .megamendung-legendary {
+        background: 
+            radial-gradient(ellipse 700px 400px at 15% 25%, rgba(250, 204, 21, 0.75) 0%, transparent 45%),
+            radial-gradient(circle 350px at 85% 70%, rgba(217, 119, 6, 0.70) 0%, transparent 55%),
+            radial-gradient(ellipse 600px 300px at 60% 50%, rgba(251, 146, 60, 0.65) 0%, transparent 50%),
+            radial-gradient(circle 280px at 35% 40%, rgba(250, 204, 21, 0.70) 0%, transparent 55%);
+        background-size: 100% 100%;
+        background-position: 0 0;
+    }
+}
+
