@@ -4,6 +4,29 @@
 # Don't exit immediately; handle failures gracefully so container doesn't crash
 echo "Start script: waiting for services and running optional setup..."
 
+# DEBUG: print DB env vars and attempt simple TCP connectivity test before migrations
+echo "ENV CHECK: DB_CONNECTION=${DB_CONNECTION:-not set} DB_URL=${DB_URL:-not set} DATABASE_URL=${DATABASE_URL:-not set} DB_HOST=${DB_HOST:-not set} DB_PORT=${DB_PORT:-not set} DB_DATABASE=${DB_DATABASE:-not set} DB_USERNAME=${DB_USERNAME:-not set}"
+php -r '
+	$dbHost = getenv("DB_HOST");
+	$dbPort = getenv("DB_PORT") ?: 3306;
+	$databaseUrl = getenv("DATABASE_URL") ?: getenv("DB_URL");
+	if ($databaseUrl && !$dbHost) {
+		$parts = parse_url($databaseUrl);
+		if ($parts !== false) {
+			$dbHost = $parts["host"] ?? $dbHost;
+			$dbPort = $parts["port"] ?? $dbPort;
+		}
+	}
+	echo "Resolved DB host: " . ($dbHost ?: 'none') . " port: " . ($dbPort ?: 'none') . "\n";
+	if ($dbHost) {
+		$fp = @fsockopen($dbHost, (int)$dbPort, $errno, $errstr, 5);
+		echo "TCP Test to {$dbHost}:{$dbPort}: " . ($fp ? "OK" : "FAILED ({$errno} {$errstr})") . "\n";
+		if ($fp) fclose($fp);
+	} else {
+		echo "No DB host available to test.\n";
+	}
+' || true
+
 # Try migrations with a few retries (useful if DB isn't ready yet)
 MAX_ATTEMPTS=10
 ATTEMPT=1
