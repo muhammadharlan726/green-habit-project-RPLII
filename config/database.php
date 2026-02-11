@@ -28,14 +28,13 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        // --- BAGIAN INI YANG SAYA PERBAIKI KHUSUS UNTUK RAILWAY ---
+        // --- OPTIMIZED FOR RAILWAY & LOCAL DEVELOPMENT ---
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL', env('DATABASE_URL')),
-            // Logika: Cari DB_HOST -> Kalau tidak ada, cari MYSQLHOST (Railway) -> Kalau tidak ada, pakai 127.0.0.1
+            'url' => env('DATABASE_URL'), // Railway provides this
             'host' => env('DB_HOST', env('MYSQLHOST', '127.0.0.1')),
             'port' => env('DB_PORT', env('MYSQLPORT', '3306')),
-            'database' => env('DB_DATABASE', env('MYSQLDATABASE', 'laravel')),
+            'database' => env('DB_DATABASE', env('MYSQLDATABASE', 'greenhabit')),
             'username' => env('DB_USERNAME', env('MYSQLUSER', 'root')),
             'password' => env('DB_PASSWORD', env('MYSQLPASSWORD', '')),
             'unix_socket' => env('DB_SOCKET', ''),
