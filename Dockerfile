@@ -37,4 +37,8 @@ ENV APP_ENV=production
 
 EXPOSE 9000
 
-CMD ["php-fpm"]
+# Make start script executable (Railway may run `start.sh` from project root)
+RUN if [ -f /var/www/html/start.sh ]; then chmod +x /var/www/html/start.sh; fi
+
+# Default command: use start.sh if present, else run php-fpm
+CMD ["/bin/bash","-lc","if [ -x /var/www/html/start.sh ]; then /var/www/html/start.sh; else php-fpm; fi"]
