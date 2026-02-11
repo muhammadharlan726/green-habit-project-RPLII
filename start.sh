@@ -1,18 +1,32 @@
 #!/bin/bash
-# Start script for Render
+# Start script for Render / Railway
 
-set -e
+# Don't exit immediately; handle failures gracefully so container doesn't crash
+echo "Start script: waiting for services and running optional setup..."
 
-echo "Running migrations..."
-php artisan migrate --force --no-interaction
+# Try migrations with a few retries (useful if DB isn't ready yet)
+MAX_ATTEMPTS=10
+ATTEMPT=1
+while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+	echo "Attempting migrations (try $ATTEMPT/$MAX_ATTEMPTS)..."
+	php artisan migrate --force --no-interaction && break
+	echo "Migration attempt $ATTEMPT failed; retrying in 5s..."
+	ATTEMPT=$((ATTEMPT+1))
+	sleep 5
+done
 
-echo "Caching configuration..."
-php artisan config:cache
-php artisan route:cache
-php artisan view:cache
+if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+	echo "Migrations failed after $MAX_ATTEMPTS attempts — continuing without completing migrations."
+fi
 
-echo "Creating storage link..."
-php artisan storage:link || true
+echo "Caching configuration (non-fatal)..."
+php artisan config:cache || echo "config:cache failed, continuing"
+php artisan route:cache || echo "route:cache failed, continuing"
+php artisan view:cache || echo "view:cache failed, continuing"
 
-echo "Starting application..."
-php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+echo "Creating storage link (non-fatal)..."
+php artisan storage:link || echo "storage link failed, continuing"
+
+echo "Starting application (exec)..."
+# Use exec so the server becomes PID 1 and receives signals correctly
+exec php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
